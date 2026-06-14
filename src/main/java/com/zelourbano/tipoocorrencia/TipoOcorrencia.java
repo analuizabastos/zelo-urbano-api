@@ -13,7 +13,7 @@ public class TipoOcorrencia implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_ocorrencia")
-    private Long id;
+    private Integer id;
 
     @Column(name = "tipos")
     private String tipo;
@@ -21,16 +21,16 @@ public class TipoOcorrencia implements Serializable {
     public TipoOcorrencia() {
     }
 
-    public TipoOcorrencia(Long id, String tipo) {
+    public TipoOcorrencia(Integer id, String tipo) {
         this.id = id;
         this.tipo = tipo;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

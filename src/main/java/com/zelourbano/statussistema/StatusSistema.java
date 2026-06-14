@@ -13,7 +13,7 @@ public class StatusSistema implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_status")
-    private Long id;
+    private Integer id;
 
     @Column(name = "nm_status")
     private String nome;
@@ -21,16 +21,16 @@ public class StatusSistema implements Serializable {
     public StatusSistema() {
     }
 
-    public StatusSistema(Long id, String nome) {
+    public StatusSistema(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

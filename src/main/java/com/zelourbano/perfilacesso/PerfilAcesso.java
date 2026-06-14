@@ -13,7 +13,7 @@ public class PerfilAcesso implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_perfil_acesso")
-    private Long id;
+    private Integer id;
 
     @Column(name = "nm_perfil_acesso")
     private String nome;
@@ -21,16 +21,16 @@ public class PerfilAcesso implements Serializable {
     public PerfilAcesso() {
     }
 
-    public PerfilAcesso(Long id, String nome) {
+    public PerfilAcesso(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
