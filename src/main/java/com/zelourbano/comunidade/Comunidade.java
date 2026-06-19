@@ -157,6 +157,10 @@ public class Comunidade implements Serializable {
         this.docIdentificacao = docIdentificacao;
     }
 
+    public void setStatus(StatusSistema status) {
+        this.status = status;
+    }
+
     public StatusSistema getStatus() {
         return status;
     }
