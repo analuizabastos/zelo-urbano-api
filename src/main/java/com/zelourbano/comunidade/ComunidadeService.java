@@ -41,7 +41,6 @@ public class ComunidadeService {
     public Comunidade atualizar(Integer id, Comunidade comunidadeAtualizada) {
         Comunidade comunidadeAtual = repository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Comunidade não encontrada"));
-
         comunidadeAtual.setNome(comunidadeAtualizada.getNome());
         comunidadeAtual.setCnpj(comunidadeAtualizada.getCnpj());
         comunidadeAtual.setRazaoSocial(comunidadeAtualizada.getRazaoSocial());
@@ -51,7 +50,6 @@ public class ComunidadeService {
         comunidadeAtual.setAreaTotal(comunidadeAtualizada.getAreaTotal());
         comunidadeAtual.setObservacoes(comunidadeAtualizada.getObservacoes());
         comunidadeAtual.setDocIdentificacao(comunidadeAtualizada.getDocIdentificacao());
-
         return repository.save(comunidadeAtual);
     }
 
