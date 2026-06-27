@@ -58,6 +58,11 @@ public class PrestadorService {
         Prestador prestadorAtual = repository.findById(id)
                 .orElseThrow(()-> new RecursoNaoEncontradoException("Prestador não encontrado"));
         prestadorAtual.setNome(prestadorAtualizado.getNome());
+        if (!prestadorAtual.getEmail().equals(prestadorAtualizado.getEmail())) {
+            usuarioRepository.findByMoradorId(id).ifPresent(usuario -> {
+                usuario.setLogin(prestadorAtualizado.getEmail());
+                usuarioRepository.save(usuario);
+            });}
         prestadorAtual.setEmail(prestadorAtualizado.getEmail());
         prestadorAtual.setTelefone(prestadorAtualizado.getTelefone());
         prestadorAtual.setCategoriaDeServico(prestadorAtualizado.getCategoriaDeServico());
@@ -71,7 +76,11 @@ public class PrestadorService {
                 .orElseThrow(()-> new RecursoNaoEncontradoException("Prestador não encontrado"));
         StatusSistema inativo = statusSistema.buscarPorNome("Inativo");
         prestadorDesativado.setStatus(inativo);
-        return repository.save(prestadorDesativado);
 
+        usuarioRepository.findByPrestadorId(id).ifPresent(usuario -> {
+            usuario.setStatus(inativo);
+            usuarioRepository.save(usuario);
+        });
+        return repository.save(prestadorDesativado);
     }
 }

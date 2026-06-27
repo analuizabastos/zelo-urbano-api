@@ -58,6 +58,11 @@ public class MoradorService {
          Morador moradorAtual = repository.findById(id)
                  .orElseThrow(() -> new RecursoNaoEncontradoException("Morador não encontrado"));
         moradorAtual.setNome(moradorAtualizado.getNome());
+        if (!moradorAtual.getEmail().equals(moradorAtualizado.getEmail())) {
+            usuarioRepository.findByMoradorId(id).ifPresent(usuario -> {
+                usuario.setLogin(moradorAtualizado.getEmail());
+                usuarioRepository.save(usuario);
+            });}
         moradorAtual.setEmail(moradorAtualizado.getEmail());
         moradorAtual.setTelefone(moradorAtualizado.getTelefone());
         moradorAtual.setLogradouro(moradorAtualizado.getLogradouro());
@@ -78,6 +83,10 @@ public class MoradorService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Morador não encontrado"));
         StatusSistema inativo = statusSistema.buscarPorNome("Inativo");
         moradorAtual.setStatus(inativo);
+        usuarioRepository.findByMoradorId(id).ifPresent(usuario -> {
+            usuario.setStatus(inativo);
+            usuarioRepository.save(usuario);
+        });
         return repository.save(moradorAtual);
     }
 }
