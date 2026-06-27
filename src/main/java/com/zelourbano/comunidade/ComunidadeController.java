@@ -22,7 +22,7 @@ public class ComunidadeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comunidade> buscarPorId(@PathVariable  Integer id){
+    public ResponseEntity<Comunidade> buscarPorId(@PathVariable Integer id){
         Comunidade comunidade = service.buscarPorId(id);
         return ResponseEntity.ok(comunidade);
     }
