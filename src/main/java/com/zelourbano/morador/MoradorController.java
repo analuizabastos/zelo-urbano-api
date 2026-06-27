@@ -40,8 +40,8 @@ public class MoradorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Morador> atualizar(@PathVariable Integer id, @RequestBody Morador moradorNovo){
-        Morador moradorAtualizado = service.atualizar(id, moradorNovo);
+    public ResponseEntity<Morador> atualizar(@PathVariable Integer id, @RequestBody Morador moradorAtual){
+        Morador moradorAtualizado = service.atualizar(id, moradorAtual);
         return ResponseEntity.ok(moradorAtualizado);
     }
 

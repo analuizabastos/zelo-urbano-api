@@ -25,6 +25,9 @@ public class Prestador implements Serializable {
     @Column(name = "cpf", length = 11, unique = true)
     private String cpf;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "categoria_de_servico", nullable = false, length = 100)
     private String categoriaDeServico;
 
@@ -62,6 +65,9 @@ public class Prestador implements Serializable {
     public void setNome(String nome) { this.nome = nome; }
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
+    public String getEmail() {return email;}
+    public void setEmail(String email) { this.email = email;}
+
     public String getCategoriaDeServico() { return categoriaDeServico; }
     public void setCategoriaDeServico(String categoriaDeServico) { this.categoriaDeServico = categoriaDeServico; }
     public String getTelefone() { return telefone; }
