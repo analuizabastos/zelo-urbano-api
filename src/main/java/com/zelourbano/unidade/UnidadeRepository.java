@@ -9,5 +9,4 @@ public interface UnidadeRepository extends JpaRepository<Unidade, Integer> {
 
     List<Unidade> findAllByComunidadeId(Integer idComunidade);
 
-    List<Unidade> findAllByMoradorId(Integer idMorador);
 }
