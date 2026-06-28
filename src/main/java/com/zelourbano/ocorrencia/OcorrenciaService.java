@@ -1,6 +1,7 @@
 package com.zelourbano.ocorrencia;
 
 import com.zelourbano.exceptions.RecursoNaoEncontradoException;
+import com.zelourbano.logsistema.LogSistemaService;
 import com.zelourbano.statussistema.StatusSistema;
 import com.zelourbano.statussistema.StatusSistemaService;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,12 @@ public class OcorrenciaService {
 
     private final OcorrenciaRepository repository;
     private final StatusSistemaService statusSistema;
+    private final LogSistemaService logSistema;
 
-    public OcorrenciaService(OcorrenciaRepository repository, StatusSistemaService statusSistema) {
+    public OcorrenciaService(OcorrenciaRepository repository, StatusSistemaService statusSistema, LogSistemaService logSistema) {
         this.repository = repository;
         this.statusSistema = statusSistema;
+        this.logSistema = logSistema;
     }
 
     public Ocorrencia buscarPorId(Integer id){
@@ -38,6 +41,7 @@ public class OcorrenciaService {
         ocorrencia.setStatus(aberta);
         ocorrencia.setDataDoRegistro(LocalDateTime.now());
         ocorrencia.setProtocolo(gerarProtocolo());
+        logSistema.registrar(null, "Criou ocorrência " + ocorrencia.getProtocolo());
         return repository.save(ocorrencia);
     }
 
@@ -62,6 +66,7 @@ public class OcorrenciaService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Ocorrencia nao encontrada"));
         StatusSistema concluida = statusSistema.buscarPorNome("Concluida");
         ocorrenciaConcluida.setStatus(concluida);
+        logSistema.registrar(null, "Concluiu ocorrência: " + ocorrenciaConcluida.getProtocolo());
         return repository.save(ocorrenciaConcluida);
     }
 

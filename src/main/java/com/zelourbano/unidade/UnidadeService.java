@@ -1,6 +1,7 @@
 package com.zelourbano.unidade;
 
 import com.zelourbano.exceptions.RecursoNaoEncontradoException;
+import com.zelourbano.logsistema.LogSistemaService;
 import com.zelourbano.statussistema.StatusSistema;
 import com.zelourbano.statussistema.StatusSistemaService;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ public class UnidadeService {
 
     private final UnidadeRepository repository;
     private final StatusSistemaService statusSistema;
+    private final LogSistemaService logSistema;
 
-    public UnidadeService(UnidadeRepository repository, StatusSistemaService statusSistema) {
+    public UnidadeService(UnidadeRepository repository, StatusSistemaService statusSistema, LogSistemaService logSistema) {
         this.repository = repository;
         this.statusSistema = statusSistema;
+        this.logSistema = logSistema;
     }
 
     public Unidade buscarPorId(Integer id){
@@ -38,6 +41,7 @@ public class UnidadeService {
     public Unidade cadastrar(Unidade unidade){
         StatusSistema ativo = statusSistema.buscarPorNome("Ativo");
         unidade.setStatus(ativo);
+        logSistema.registrar(null, "Cadastrou unidade id: " + unidade.getId());
         return repository.save(unidade);
     }
 
@@ -55,6 +59,7 @@ public class UnidadeService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Unidade não encontrado"));
         StatusSistema inativo = statusSistema.buscarPorNome("Inativo");
         unidade.setStatus(inativo);
+        logSistema.registrar(null, "Desativou unidade id: " + id);
         return repository.save(unidade);
     }
 

@@ -1,6 +1,7 @@
 package com.zelourbano.morador;
 
 import com.zelourbano.exceptions.RecursoNaoEncontradoException;
+import com.zelourbano.logsistema.LogSistemaService;
 import com.zelourbano.statussistema.StatusSistema;
 import com.zelourbano.statussistema.StatusSistemaService;
 import com.zelourbano.usuario.Usuario;
@@ -17,12 +18,14 @@ public class MoradorService {
     private final StatusSistemaService statusSistema;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LogSistemaService logSistema;
 
-    public MoradorService(MoradorRepository repository, StatusSistemaService statusSistema, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public MoradorService(MoradorRepository repository, StatusSistemaService statusSistema, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, LogSistemaService logSistema) {
         this.repository = repository;
         this.statusSistema = statusSistema;
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.logSistema = logSistema;
     }
 
     public Morador buscarPorId(Integer id){
@@ -50,6 +53,7 @@ public class MoradorService {
         usuario.setMorador(moradorSalvo);
         usuario.setStatus(ativo);
 
+        logSistema.registrar(null, "Cadastrou morador: " + moradorSalvo.getNome());
         usuarioRepository.save(usuario);
         return moradorSalvo;
     }
@@ -87,6 +91,7 @@ public class MoradorService {
             usuario.setStatus(inativo);
             usuarioRepository.save(usuario);
         });
+        logSistema.registrar(null, "Desativou morador id: " + id);
         return repository.save(moradorAtual);
     }
 }

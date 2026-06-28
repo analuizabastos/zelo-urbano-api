@@ -1,6 +1,7 @@
 package com.zelourbano.prestador;
 
 import com.zelourbano.exceptions.RecursoNaoEncontradoException;
+import com.zelourbano.logsistema.LogSistemaService;
 import com.zelourbano.statussistema.StatusSistema;
 import com.zelourbano.statussistema.StatusSistemaService;
 import com.zelourbano.usuario.Usuario;
@@ -17,12 +18,14 @@ public class PrestadorService {
     private final StatusSistemaService statusSistema;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LogSistemaService logSistema;
 
-    public PrestadorService(PrestadorRepository repository, StatusSistemaService statusSistema, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public PrestadorService(PrestadorRepository repository, StatusSistemaService statusSistema, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, LogSistemaService logSistema) {
         this.repository = repository;
         this.statusSistema = statusSistema;
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.logSistema = logSistema;
     }
 
     public Prestador buscarPorId(Integer id){
@@ -49,6 +52,7 @@ public class PrestadorService {
         usuario.setSenha(passwordEncoder.encode(senha));
         usuario.setPrestador(prestadorNovo);
         usuario.setStatus(ativo);
+        logSistema.registrar(null, "Cadastrou prestador: " + prestadorNovo.getNome());
 
         usuarioRepository.save(usuario);
         return prestadorNovo;
@@ -76,11 +80,11 @@ public class PrestadorService {
                 .orElseThrow(()-> new RecursoNaoEncontradoException("Prestador não encontrado"));
         StatusSistema inativo = statusSistema.buscarPorNome("Inativo");
         prestadorDesativado.setStatus(inativo);
-
         usuarioRepository.findByPrestadorId(id).ifPresent(usuario -> {
             usuario.setStatus(inativo);
             usuarioRepository.save(usuario);
         });
+        logSistema.registrar(null, "Desativou prestador id: " + id);
         return repository.save(prestadorDesativado);
     }
 }
